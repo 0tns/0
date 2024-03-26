@@ -2,14 +2,14 @@ document.getElementById('upload-form').addEventListener('submit', async function
     e.preventDefault();
     const fileInput = document.getElementById('file-input');
     const fileList = document.getElementById('file-list');
-const date = new Date().toISOString();
-const message = 'Upload de arquivo em ' + date;
-const body = JSON.stringify({
-    message: message,
-    content: content
-});
+    const status = document.getElementById('status');
 
     const file = fileInput.files[0];
+    if (!file) {
+        status.textContent = 'Selecione um arquivo para enviar.';
+        return;
+    }
+
     const reader = new FileReader();
     reader.onload = async function () {
         const result = reader.result;
@@ -36,9 +36,10 @@ const body = JSON.stringify({
             link.setAttribute('target', '_blank');
             fileList.appendChild(link);
             fileList.appendChild(document.createElement('br'));
+            status.textContent = 'Arquivo enviado com sucesso.';
         } catch (error) {
             console.error('Erro ao fazer upload:', error);
-            alert('Erro ao fazer upload do arquivo. Por favor, tente novamente.');
+            status.textContent = 'Erro ao fazer upload do arquivo. Por favor, tente novamente.';
         }
     };
     reader.readAsBinaryString(file);
