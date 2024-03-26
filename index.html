@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Meu Site</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
 </head>
 <body>
-    <h1>Resultados</h1>
-    <div id="resultados"></div>
+  <h1>Chat App</h1>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics.js"></script>
 
-    <script>
-        // Fetch data from GitHub
-        fetch('https://raw.githubusercontent.com/seu-usuario/seu-repositorio/main/dados.json')
-        .then(response => response.json())
-        .then(data => {
-            // Display data on the webpage
-            document.getElementById('resultados').innerHTML = JSON.stringify(data);
-        });
-    </script>
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+  apiKey: "AIzaSyCztCoTbZWBRFuwQ77KDu0LzASHy3RT3G8",
+  authDomain: "tns24-e27e5.firebaseapp.com",
+  projectId: "tns24-e27e5",
+  storageBucket: "tns24-e27e5.appspot.com",
+  messagingSenderId: "896673674101",
+  appId: "1:896673674101:web:d23167a8b147ca893ad93c",
+  measurementId: "G-VPBP3XP5FN"
+};
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics();
+  </script>
 </body>
 </html>
