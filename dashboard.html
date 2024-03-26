@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <title>fill</title>
 </head>
 <body>
-    <h1>FILL</h1>
+    <h1>Dashboard</h1>
     <form id="formulario">
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo"><br><br>
@@ -41,7 +41,7 @@
                 },
                 body: JSON.stringify({
                     message: 'Atualização dos dados',
-                    content: btoa(JSON.stringify(data)),
+                    content: JSON.stringify(data), // Não precisa mais usar btoa aqui
                     sha: 'e710f8979462ff21200c736b3023bcb0dd63287e'
                 })
             })
