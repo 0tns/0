@@ -8,55 +8,44 @@
 </head>
 <body>
     <h1>Upload de Arquivos</h1>
-    <form id="upload-form" enctype="multipart/form-data">
+    <form id="upload-form" enctype="multipart/form-data" method="POST" action="#">
         <input type="file" name="file" id="file-input">
         <button type="submit">Enviar Arquivo</button>
     </form>
     <div id="file-list"></div>
 
     <script>
-        async function readFile(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-                reader.readAsBinaryString(file);
-            });
-        }
-
-        const uploadForm = document.getElementById('upload-form');
-        const fileInput = document.getElementById('file-input');
-        const fileList = document.getElementById('file-list');
-
-        uploadForm.addEventListener('submit', async (e) => {
+        document.getElementById('upload-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            const file = fileInput.files[0];
+            const file = document.getElementById('file-input').files[0];
             if (file) {
-                const content = btoa(await readFile(file));
-                const url = 'https://api.github.com/repos/seu-usuario/upload-arquivos/contents/' + file.name;
-                const body = JSON.stringify({
-                    message: 'Upload de arquivo',
-                    content: content
-                });
-                fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: 'token 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', // Substitua pelo seu token de acesso
-                        'Content-Type': 'application/json'
-                    },
-                    body: body
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const fileUrl = data.content.download_url;
-                    const link = document.createElement('a');
-                    link.href = fileUrl;
-                    link.textContent = file.name;
-                    link.setAttribute('target', '_blank');
-                    fileList.appendChild(link);
-                    fileList.appendChild(document.createElement('br'));
-                })
-                .catch(error => console.error('Erro ao fazer upload:', error));
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const result = reader.result;
+                    fetch('https://api.github.com/repos/seu-usuario/upload-arquivos/contents/' + file.name, {
+                        method: 'PUT',
+                        headers: {
+                            Authorization: 'token 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', // Substitua pelo seu token de acesso
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: 'Upload de arquivo',
+                            content: btoa(result)
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Falha ao enviar arquivo');
+                        }
+                        return response.json();
+                    })
+                    .then(data => console.log('Arquivo enviado:', data))
+                    .catch(error => {
+                        console.error('Erro ao enviar arquivo:', error);
+                        alert('Erro ao enviar arquivo');
+                    });
+                };
+                reader.readAsBinaryString(file);
             }
         });
     </script>
