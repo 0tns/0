@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <form id="formulario">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo"><br><br>
+
+        <label for="foto">Foto:</label>
+        <input type="text" id="foto" name="foto"><br><br>
+
+        <label for="link">Link:</label>
+        <input type="text" id="link" name="link"><br><br>
+
+        <label for="texto">Texto:</label>
+        <textarea id="texto" name="texto"></textarea><br><br>
+
+        <button type="submit">Salvar Alterações</button>
+    </form>
+
+    <script>
+        // Submit form data to GitHub
+        document.getElementById('formulario').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let data = {
+                titulo: document.getElementById('titulo').value,
+                foto: document.getElementById('foto').value,
+                link: document.getElementById('link').value,
+                texto: document.getElementById('texto').value
+            };
+
+            fetch('https://api.github.com/repos/seu-usuario/seu-repositorio/contents/dados.json', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token SEU_TOKEN_DE_ACESSO',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Atualização dos dados',
+                    content: btoa(JSON.stringify(data)),
+                    sha: 'SHA_DO_ARQUIVO_NO_GITHUB'
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert('Alterações salvas com sucesso!');
+            })
+            .catch(error => {
+                alert('Ocorreu um erro ao salvar as alterações.');
+                console.error('Erro:', error);
+            });
+        });
+    </script>
+</body>
+</html>
