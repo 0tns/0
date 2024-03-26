@@ -15,17 +15,29 @@
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
 
   <script>
+    // Your web app's Firebase configuration
     const firebaseConfig = {
-      // Sua configuração do Firebase aqui
+      apiKey: "AIzaSyCztCoTbZWBRFuwQ77KDu0LzASHy3RT3G8",
+      authDomain: "tns24-e27e5.firebaseapp.com",
+      projectId: "tns24-e27e5",
+      storageBucket: "tns24-e27e5.appspot.com",
+      messagingSenderId: "896673674101",
+      appId: "1:896673674101:web:d23167a8b147ca893ad93c",
+      measurementId: "G-VPBP3XP5FN"
     };
 
+    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
-    const analytics = firebase.analytics();
-
     const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    auth.signInAnonymously()
+      .then(() => console.log('Autenticado com sucesso'))
+      .catch(error => console.error('Erro na autenticação:', error));
 
     const messageForm = document.getElementById('message-form');
     const messageInput = document.getElementById('message-input');
@@ -33,12 +45,14 @@
 
     messageForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const message = messageInput.value;
-      db.collection('messages').add({
-        text: message,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      messageInput.value = '';
+      const message = messageInput.value.trim();
+      if (message !== '') {
+        db.collection('messages').add({
+          text: message,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        messageInput.value = '';
+      }
     });
 
     db.collection('messages')
