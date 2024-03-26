@@ -1,22 +1,39 @@
-document.getElementById('file-input').addEventListener('change', function () {
-    const file = this.files[0];
+document.getElementById('upload-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('file-input');
+    const fileList = document.getElementById('file-list');
+
+    const file = fileInput.files[0];
     const reader = new FileReader();
-    reader.onload = function () {
+    reader.onload = async function () {
         const result = reader.result;
-        fetch('https://api.github.com/repos/seu-usuario/upload-arquivos/contents/' + file.name, {
-            method: 'PUT',
-            headers: {
-                Authorization: 'token SEU_TOKEN_DE_ACESSO', // Substitua pelo seu token de acesso
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Upload de arquivo',
-                content: btoa(result)
-            })
-        })
-        .then(response => response.json())
-        .then(data => console.log('Arquivo enviado:', data))
-        .catch(error => console.error('Erro ao enviar arquivo:', error));
+        const url = 'https://api.github.com/repos/seu-usuario/0/contents/' + file.name;
+        const content = btoa(result);
+        const body = JSON.stringify({
+            message: 'Upload de arquivo',
+            content: content
+        });
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    Authorization: 'token SEU_TOKEN_DE_ACESSO', // Substitua pelo seu token de acesso
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+            const data = await response.json();
+            const fileUrl = data.content.download_url;
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.textContent = file.name;
+            link.setAttribute('target', '_blank');
+            fileList.appendChild(link);
+            fileList.appendChild(document.createElement('br'));
+        } catch (error) {
+            console.error('Erro ao fazer upload:', error);
+            alert('Erro ao fazer upload do arquivo. Por favor, tente novamente.');
+        }
     };
     reader.readAsBinaryString(file);
 });
