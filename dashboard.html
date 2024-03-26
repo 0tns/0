@@ -33,18 +33,19 @@
                 texto: document.getElementById('texto').value
             };
 
-            fetch('https://api.github.com/repos/0tns/0/contents/dados.json', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'token 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',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Atualização dos dados',
-                    content: JSON.stringify(data), // Não precisa mais usar btoa aqui
-                    sha: 'e710f8979462ff21200c736b3023bcb0dd63287e'
-                })
-            })
+           fetch('https://api.github.com/repos/0tns/0/contents/dados.json', {
+    method: 'PUT',
+    headers: {
+        'Authorization': 'token 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',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        message: 'Atualização dos dados',
+        content: JSON.stringify(data),
+        sha: '1452231d7736a7a8211676ec041580bd251ad2ef'
+    })
+})
+
             .then(response => response.json())
             .then(result => {
                 alert('Alterações salvas com sucesso!');
