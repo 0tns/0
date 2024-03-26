@@ -1,31 +1,327 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload de Arquivos</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/service-worker.js');
+    });
+  }
+</script>
+
+  
+  <script>
+function bloquearPopups() {
+    var iframe = document.getElementById('meuIframe');
+
+    iframe.contentWindow.document.addEventListener('click', function(event) {
+        if (event.target.tagName === 'A' && event.target.getAttribute('target') === '_blank') {
+            event.preventDefault();
+        }
+    });
+}
+
+bloquearPopups();
+  
+</script>
+</head>
+    <title>TNS</title>
+  
+  
+
+  
+  <style>
+      
+        /* Estilo para o corpo da página */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Alinha no topo */
+            align-items: center;
+            height: 100vh; /* Altura total da janela de visualização */
+            margin: 0; /* Remove margens padrão */
+            background-color: #f0f0f0; /* Cor de fundo */
+            font-family: Arial, sans-serif; /* Fonte padrão */
+font-weight: bold;    
+          color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+      
+       /* Estilos para dispositivos móveis na orientação retrato */
+        @media screen and (max-width: 767px) and (orientation: portrait) {
+            body {
+                display: none; /* Oculta o conteúdo em orientação retrato */
+            }
+            .alerta-rotacao {
+                display: block;
+                text-align: center;
+                padding: 20px;
+                font-size: 20px;
+            }
+        }
+        
+        /* Estilos para dispositivos móveis na orientação paisagem */
+        @media screen and (max-width: 767px) and (orientation: landscape) {
+            body {
+                display: block; /* Exibe o conteúdo em orientação paisagem */
+            }
+            .alerta-rotacao {
+                display: none; /* Oculta a mensagem de alerta em orientação paisagem */
+            }
+        }
+
+      /* Estilo para o contêiner do iframe */
+.iframe-container {
+    position: relative; /* Permite posicionar elementos filhos relativamente */
+    width: 400px; /* Largura do contêiner */
+    height: 500px; /* Altura do contêiner */
+    margin: 20px auto; /* Margem automática nas laterais para centralizar */
+}
+
+
+/* Estilo para a imagem sobreposta */
+.overlay-image {
+    position: absolute; /* Posição absoluta em relação ao contêiner */
+    top: 0; /* Alinha a parte superior da imagem ao topo */
+    left: 45px; /* Alinha a parte esquerda da imagem à esquerda */
+    width: 310px; /* Largura do contêiner */
+    height: 150px; /* Altura do contêiner */
+    object-fit: cover; /* Redimensiona a imagem para preencher o contêiner */
+    z-index: -1; /* Coloca a imagem atrás do resto do conteúdo */
+    margin: auto; /* Margem automática para centralizar */
+}
+#meuIframe {
+    clip-path: inset(0px 0 55px 0); /* Recorta 55px da parte inferior */
+    width: 300px; /* Largura do contêiner */
+    height: 200px; /* Altura do contêiner */
+    border-right: 5px solid black;
+    border-left: 5px solid black;
+    border-top: 5px solid blue;
+    border-down: 5px solid blue;
+    margin: auto; /* Margem automática para centralizar */
+}
+
+
+      .botao-container {
+    display: flex;
+    justify-content: space-between; /* Distribui os itens ao longo do contêiner com espaço entre eles */
+    width: 100%; /* Largura total */
+    max-width: 300px; /* Largura máxima */
+    margin-bottom: 0px; /* Espaçamento abaixo dos botões */
+}
+
+      
+        /* Estilo para os botões */
+        button {
+          font-weight: bold;    
+
+            background-color: #b0e0e6; /* Azul bebê */
+            color: #333; /* Cor do texto */
+            border: 2px solid black;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            outline: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s, color 0.3s; /* Transição suave */
+        }
+
+        /* Estilo de hover */
+        button:hover {
+            background-color: #000; /* Preto */
+            color: #fff; /* Branco */
+          box-shadow: 1px 1px 50px green;
+        }
+
+        /* Estilo de click */
+        button:active {
+            box-shadow: 1px 1px 50px black; /* Sombra verde */
+        }
+
+       /* Estilo para a caixa de episódios */
+.episodios {
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha */
+    justify-content: center; /* Alinha os botões no centro horizontalmente */
+    max-width: 1000px; /* Define a largura máxima da caixa de episódios */
+    margin-left: auto; /* Centraliza a caixa horizontalmente */
+    margin-right: auto; /* Centraliza a caixa horizontalmente */
+}
+
+/* Estilo para os botões de episódio */
+.episodios button {
+    flex: 0 0 12%; /* Define a largura de cada botão para ocupar 18% da largura da caixa de episódios */
+    margin: 7px; /* Espaçamento entre os botões */
+}
+
+
+
+        /* Estilo para a linha abaixo do nome EPISÓDIOS */
+        .linha {
+            width: 100%;
+            margin: 10px auto;
+            border-bottom: 5px solid black; /* Linha cinza */
+        }
+
+      
+   #resultado {
+            margin-top: 20px;
+        }
+         /* Estilo para o botão ativo */
+        button.active {
+            background-color: #90EE90; /* Verde claro */
+            color: #000; /* Preto */
+            border-bottom: 4px solid green; /* Linha cinza */
+            box-shadow: 1px 1px 50px green; /* Sombra verde */
+
+
+        }
+      
+    </style>
 </head>
 <body>
-    <h1>Upload de Arquivos</h1>
-    <form id="upload-form" enctype="multipart/form-data">
-        <input type="file" name="file" id="file-input">
-        <button type="submit">Enviar Arquivo</button>
-    </form>
-    <div id="file-list"></div>
+  <center>
+   <hr style="color: red; border: 1px solid black; width: 100%"> AÇÕES → 1 - Recarrega Página | 2 - Modo escuro <hr style="color: red; border: 1px solid black; width: 100%">
+         <h2><div>Os Super Patos</div></h2>
+    <!-- Caixa de episódios -->
+    <div class="episodios">
+      
+        <div class="linha"></div>
+        
+        <!-- Adicione os botões de episódio aqui -->
+    </div>
+    
+   <div class="iframe-container">
+    <!-- Iframe -->
+    <iframe id="meuIframe" name="Player" src="" 
+            scrolling="no" allow="encrypted-media" allowFullScreen></iframe>
+
+    <!-- Imagem sobreposta -->
+    <div class="overlay-image">
+        <img src="https://kanto.legiaodosherois.com.br/w760-h398-cfill/wp-content/uploads/2016/05/803b4fe00a7f6cec65017799f4ec17ef.jpg.webp" alt="Imagem de fundo" style="width: 100%; height: 100%;">
+    </div>
+</div>       
 
     <script>
-        const uploadForm = document.getElementById('upload-form');
-        const fileInput = document.getElementById('file-input');
-        const fileList = document.getElementById('file-list');
+        // URLs dos episódios
+        const urls = [
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP01",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP02",
+            "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP03",
+            "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP04",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP05",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP06",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP07",
+            "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP08",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP09",
+            "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP10",
+            "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP11",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP12",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP13",
+            "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP14",
+            "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP15",
+           "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP16",
+    "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP17",
+    "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP18",
+    "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP19",
+    "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP20",
+    "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP21",
+    "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP22",
+    "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP23",
+    "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP24",
+    "https://sinalpublico.cc/player3/server15hlb.php?vid=OSSPRPTSEP25",
+    "https://sinalpublico.cc/player3/server19hlb.php?vid=OSSPRPTSEP26"
+       
+          ];
 
-        uploadForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const file = fileInput.files[0];
-            if (file) {
-                // Implemente o código JavaScript para enviar o arquivo para o servidor e exibir o resultado aqui
+        let activeButton = null; // Referência para o botão ativo
+
+        // Função para trocar a classe dos botões
+        function toggleActive(button) {
+            if (activeButton) {
+                activeButton.classList.remove('active');
             }
+            button.classList.add('active');
+            activeButton = button;
+        }
+
+        // Cria os botões de episódio
+        const episodiosDiv = document.querySelector('.episodios');
+        urls.forEach((url, index) => {
+            const button = document.createElement('button');
+            button.textContent = `EP${index + 1}`;
+            button.onclick = () => {
+                document.getElementById('meuIframe').src = url;
+                toggleActive(button); // Ativa o botão clicado
+            };
+            episodiosDiv.appendChild(button);
         });
+
+     
+        document.addEventListener('keydown', function(event) {
+            var resultado = document.getElementById('resultado');
+
+            switch(event.key) {
+                case '1':
+            resultado.innerHTML = '';
+            window.location.reload();
+            break;
+        
+        case '2':
+            resultado.innerHTML = '';
+            if (document.body.style.backgroundColor === 'rgb(51, 51, 51)') {
+                desativarModoEscuro();
+            } else {
+                ativarModoEscuro();
+            }
+            
+            break;
+                
+                  case '3':
+            resultado.innerHTML = '';
+            window.history.go(-1);
+            break;
+                
+        default:
+            resultado.innerHTML = '';
+    }
+});
+      
+         function ativarModoEscuro() {
+            document.body.style.backgroundColor = '#333';
+            document.body.style.color = '#fff';
+        }
+
+        function desativarModoEscuro() {
+            document.body.style.backgroundColor = '#f0f0f0';
+            document.body.style.color = '#333';
+        }
+
+       // Verifica se o dispositivo está na orientação paisagem
+        function isLandscapeOrientation() {
+            return (window.orientation === 90 || window.orientation === -90);
+        }
+
+        // Exibe um alerta popup pedindo para virar o dispositivo
+        function showOrientationAlert() {
+            if (!isLandscapeOrientation() && window.innerWidth <= 768) { // Adicionado o teste de largura menor ou igual a 768px
+                alert("Por favor, vire seu dispositivo para a orientação paisagem para melhor experiência!");
+            }
+        }
+
+        // Chama a função ao carregar a página
+        window.onload = function() {
+            showOrientationAlert();
+        };
+      
+    
     </script>
 </body>
 </html>
+    <div id="resultado"></div>
