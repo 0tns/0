@@ -4,15 +4,16 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upload</title>
+<title>Upload de Arquivos</title>
 </head>
 <body>
-    <h1>Upload</h1>
+    <h1>Upload de Arquivos</h1>
     <form id="upload-form" enctype="multipart/form-data" method="POST" action="#">
         <input type="file" name="file" id="file-input">
         <button type="submit">Enviar Arquivo</button>
     </form>
-    <div id="file-list"></div>
+    <h2>Arquivos Enviados:</h2>
+    <ul id="file-list"></ul>
 
     <script>
         document.getElementById('upload-form').addEventListener('submit', function (e) {
@@ -25,7 +26,7 @@
                     fetch('https://api.github.com/repos/seu-usuario/upload-arquivos/contents/' + file.name, {
                         method: 'PUT',
                         headers: {
-                            Authorization: 'token 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', // Substitua pelo seu token de acesso
+                            Authorization: 'token SEU_TOKEN_DE_ACESSO', // Substitua pelo seu token de acesso
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
@@ -39,7 +40,16 @@
                         }
                         return response.json();
                     })
-                    .then(data => console.log('Arquivo enviado:', data))
+                    .then(data => {
+                        console.log('Arquivo enviado:', data);
+                        const fileList = document.getElementById('file-list');
+                        const listItem = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = data.content.download_url;
+                        link.textContent = file.name;
+                        listItem.appendChild(link);
+                        fileList.appendChild(listItem);
+                    })
                     .catch(error => {
                         console.error('Erro ao enviar arquivo:', error);
                         alert('Erro ao enviar arquivo');
