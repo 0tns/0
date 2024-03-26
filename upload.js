@@ -2,6 +2,12 @@ document.getElementById('upload-form').addEventListener('submit', async function
     e.preventDefault();
     const fileInput = document.getElementById('file-input');
     const fileList = document.getElementById('file-list');
+const date = new Date().toISOString();
+const message = 'Upload de arquivo em ' + date;
+const body = JSON.stringify({
+    message: message,
+    content: content
+});
 
     const file = fileInput.files[0];
     const reader = new FileReader();
