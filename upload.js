@@ -23,7 +23,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: {
-                    Authorization: 'token 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', // Substitua pelo seu token de acesso
+                    Authorization: 'token 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', // Substitua pelo seu token de acesso
                     'Content-Type': 'application/json'
                 },
                 body: body
