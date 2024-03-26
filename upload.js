@@ -7,7 +7,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
     const reader = new FileReader();
     reader.onload = async function () {
         const result = reader.result;
-        const url = 'https://api.github.com/repos/seu-usuario/0/contents/' + file.name;
+        const url = 'https://api.github.com/repos/0tns/0/contents/' + file.name;
         const content = btoa(result);
         const body = JSON.stringify({
             message: 'Upload de arquivo',
