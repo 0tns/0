@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload de Arquivos</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload de Arquivos</title>
 </head>
 <body>
     <h1>Upload de Arquivos</h1>
@@ -23,7 +23,31 @@
             e.preventDefault();
             const file = fileInput.files[0];
             if (file) {
-                // Implemente o código JavaScript para enviar o arquivo para o servidor e exibir o resultado aqui
+                const url = 'https://api.github.com/repos/seu-usuario/upload-arquivos/contents/' + file.name;
+                const content = btoa(await file.arrayBuffer());
+                const body = JSON.stringify({
+                    message: 'Upload de arquivo',
+                    content: content
+                });
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: 'token SEU_TOKEN_DE_ACESSO', // Substitua pelo seu token de acesso
+                        'Content-Type': 'application/json'
+                    },
+                    body: body
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const fileUrl = data.content.download_url;
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.textContent = file.name;
+                    link.setAttribute('target', '_blank');
+                    fileList.appendChild(link);
+                    fileList.appendChild(document.createElement('br'));
+                })
+                .catch(error => console.error('Erro ao fazer upload:', error));
             }
         });
     </script>
