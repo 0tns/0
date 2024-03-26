@@ -1,6 +1,6 @@
 {
-    "titulo": "Meus Resultados",
-    "foto": "link_para_a_foto.jpg",
-    "link": "https://www.example.com",
-    "texto": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    "titulo": "Novo Título",
+    "foto": "novo_link_para_a_foto.jpg",
+    "link": "https://www.novosite.com",
+    "texto": "Novo texto"
 }
