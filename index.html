@@ -15,6 +15,15 @@
     <div id="file-list"></div>
 
     <script>
+        async function readFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsBinaryString(file);
+            });
+        }
+
         const uploadForm = document.getElementById('upload-form');
         const fileInput = document.getElementById('file-input');
         const fileList = document.getElementById('file-list');
@@ -23,8 +32,8 @@
             e.preventDefault();
             const file = fileInput.files[0];
             if (file) {
+                const content = btoa(await readFile(file));
                 const url = 'https://api.github.com/repos/seu-usuario/upload-arquivos/contents/' + file.name;
-                const content = btoa(await file.arrayBuffer());
                 const body = JSON.stringify({
                     message: 'Upload de arquivo',
                     content: content
