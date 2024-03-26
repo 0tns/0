@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload2</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Meu Site</title>
 </head>
 <body>
-    <h1>7</h1>
-    <form id="upload-form" enctype="multipart/form-data">
-        <input type="file" name="file" id="file-input">
-        <button type="submit">Enviar Arquivo</button>
-    </form>
-    <div id="status"></div>
-    <div id="file-list"></div>
+    <h1>Resultados</h1>
+    <div id="resultados"></div>
 
-    <script src="upload.js"></script>
+    <script>
+        // Fetch data from GitHub
+        fetch('https://raw.githubusercontent.com/seu-usuario/seu-repositorio/main/dados.json')
+        .then(response => response.json())
+        .then(data => {
+            // Display data on the webpage
+            document.getElementById('resultados').innerHTML = JSON.stringify(data);
+        });
+    </script>
 </body>
 </html>
