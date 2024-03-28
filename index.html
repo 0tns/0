@@ -1,74 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat App</title>
+    <title>Selecionar Músicas</title>
+    <style>
+        #selectedSongs {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Chat</h1>
-  <div id="messages"></div>
-  <form id="message-form">
-    <input type="text" id="message-input" placeholder="Digite sua mensagem...">
-    <button type="submit">Enviar</button>
-  </form>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
-
-  <script>
- // Your web app's Firebase configuration
-        const firebaseConfig = {
-      apiKey: "AIzaSyCztCoTbZWBRFuwQ77KDu0LzASHy3RT3G8",
-      authDomain: "tns24-e27e5.firebaseapp.com",
-      projectId: "tns24-e27e5",
-      storageBucket: "tns24-e27e5.appspot.com",
-      messagingSenderId: "896673674101",
-      appId: "1:896673674101:web:d23167a8b147ca893ad93c",
-      measurementId: "G-VPBP3XP5FN"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const auth = firebase.auth();
-
-    auth.signInAnonymously()
-      .then(() => console.log('Autenticado com sucesso'))
-      .catch(error => console.error('Erro na autenticação:', error));
-
-    const messageForm = document.getElementById('message-form');
-    const messageInput = document.getElementById('message-input');
-    const messagesDiv = document.getElementById('messages');
-
-    messageForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const message = messageInput.value.trim();
-      if (message !== '') {
-        db.collection('messages').add({
-          text: message,
-          sender: auth.currentUser.uid,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        messageInput.value = '';
-      }
-    });
-
-    db.collection('messages')
-      .orderBy('timestamp')
-      .onSnapshot(snapshot => {
-        messagesDiv.innerHTML = '';
-        snapshot.forEach(doc => {
-          const message = doc.data();
-          const messageDiv = document.createElement('div');
-          messageDiv.textContent = message.text;
-          messagesDiv.appendChild(messageDiv);
-        });
-      });
-  </script>
+    <h1>Selecione suas 10 músicas favoritas:</h1>
+    <form id="musicsForm">
+        <input type="checkbox" name="music" value="Song 1">Song 1<br>
+        <input type="checkbox" name="music" value="Song 2">Song 2<br>
+        <input type="checkbox" name="music" value="Song 3">Song 3<br>
+        <input type="checkbox" name="music" value="Song 4">Song 4<br>
+        <input type="checkbox" name="music" value="Song 5">Song 5<br>
+        <input type="checkbox" name="music" value="Song 6">Song 6<br>
+        <input type="checkbox" name="music" value="Song 7">Song 7<br>
+        <input type="checkbox" name="music" value="Song 8">Song 8<br>
+        <input type="checkbox" name="music" value="Song 9">Song 9<br>
+        <input type="checkbox" name="music" value="Song 10">Song 10<br>
+        
+        <input type="button" value="Finalizar" onclick="showSelectedSongs()">
+    </form>
+    
+    <div id="selectedSongs"></div>
+    
+    <button id="shareButton" style="display: none;" onclick="redirectToWhatsApp()">Compartilhar</button>
+    
+    <script>
+        function showSelectedSongs() {
+            var form = document.getElementById('musicsForm');
+            var checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+            var selectedSongs = document.getElementById('selectedSongs');
+            var shareButton = document.getElementById('shareButton');
+            
+            selectedSongs.innerHTML = '<h2>Músicas selecionadas:</h2>';
+            
+            checkboxes.forEach(function(checkbox) {
+                var song = document.createElement('span');
+                song.innerHTML = checkbox.value + '<br>';
+                selectedSongs.appendChild(song);
+            });
+            
+            shareButton.style.display = 'block';
+        }
+        
+        function redirectToWhatsApp() {
+            var selectedSongsText = document.getElementById('selectedSongs').innerText;
+            var whatsappLink = 'https://wa.me/5585987593267?text=' + encodeURIComponent(selectedSongsText);
+            window.location.href = whatsappLink;
+        }
+    </script>
 </body>
 </html>
-
-
